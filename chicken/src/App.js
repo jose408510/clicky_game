@@ -11,24 +11,39 @@ class App extends Component {
     friends
   };
 
-  removeFriend = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const friends = this.state.friends.map(friend => friend.id !== id);
-    // Set this.state.friends equal to the new friends array
-    this.setState({ friends });
-  };
+  checkClicked = id => {
+    console.log(id);
+    if (this.state.friends[id].clicked === true) {
+      console.log("Already clicked");
+    } else {
+      console.log("Not clicked yet");
+    }
+    const newArray = this.shuffleCards(this.state.friends);
+    this.setState({
+      friends: newArray
+    })
+  }
+
+  shuffleCards = array => {
+    for(let i = 0; i < array.length; i++){
+      const sort = Math.floor(Math.random() * (i+1));
+      [array[i], array[sort]] = [array[sort], array[i]] 
+    }
+    return array;
+  }
+
 
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
      <Wrapper>
-        <Title></Title>
+        <Title>Exotic Car Guessing Game</Title>
         {this.state.friends.map(friend => (
           <FriendCard
-            // removeFriend={this.removeFriend}
             id={friend.id}
             key={friend.id}
             image={friend.image}
+            clicked={this.checkClicked}
           />
         ))}
       </Wrapper>
